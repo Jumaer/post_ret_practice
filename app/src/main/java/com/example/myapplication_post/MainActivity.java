@@ -2,8 +2,11 @@ package com.example.myapplication_post;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import com.example.myapplication_post.post_object_pojos.Data;
 import com.example.myapplication_post.post_object_pojos.MainPostObjectClass;
@@ -20,13 +23,15 @@ public class MainActivity extends AppCompatActivity {
 
     Data data;
     MainPostObjectClass mainPostObjectClass;
-
+    private Button button_move2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        button_move2 = findViewById(R.id.button_move2);
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://app.fakejson.com/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -42,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<MainResponsePost> call, Response<MainResponsePost> response) {
 
-                if(response.code()==200){
+                if(response.isSuccessful()){
 
                 String f_name=    response.body().getNameFirst();
                 String l_name=    response.body().getNameLast();
@@ -74,5 +79,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void move(View view) {
+        Intent intent = new Intent(MainActivity.this,MainMove2.class);
+        startActivity(intent);
     }
 }
